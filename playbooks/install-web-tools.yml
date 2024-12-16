@@ -1,0 +1,55 @@
+---
+- name: Installer les outils de pentest Web
+  hosts: pentest
+  become: yes
+  tasks:
+    - name: Installer sslscan
+      apt:
+        name: sslscan
+        state: present
+
+    - name: Installer nmap
+      apt:
+        name: nmap
+        state: present
+
+    - name: Installer whatweb
+      apt:
+        name: whatweb
+        state: present
+
+    - name: Installer wpscan
+      apt:
+        name: wpscan
+        state: present
+
+    - name: Installer burpsuite
+      apt:
+        name: burpsuite
+        state: present
+
+    - name: Installer gobuster
+      apt:
+        name: gobuster
+        state: present
+
+    - name: Installer wfuzz
+      apt:
+        name: wfuzz
+        state: present
+
+    - name: Installer ffuf
+      apt:
+        name: ffuf
+        state: present
+
+    - name: Installer dirbuster
+      apt:
+        name: dirbuster
+        state: present
+
+    - name: Installer sqlmap
+      apt:
+        name: sqlmap
+        state: present
+

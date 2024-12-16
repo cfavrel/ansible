@@ -1,0 +1,34 @@
+---
+- name: Installer les outils de base
+  hosts: pentest
+  become: yes
+  tasks:
+    - name: Mettre à jour les paquets
+      apt:
+        update_cache: yes
+
+    - name: Installer vim
+      apt:
+        name: vim
+        state: present
+
+    - name: Installer curl
+      apt:
+        name: curl
+        state: present
+
+    - name: Installer netcat
+      apt:
+        name: netcat-traditional
+        state: present
+
+    - name: Installer hashcat
+      apt:
+        name: hashcat
+        state: present
+
+    - name: Installer johntheripper
+      apt:
+        name: john
+        state: present
+

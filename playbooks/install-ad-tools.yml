@@ -1,0 +1,47 @@
+---
+- name: Installer les outils pour Active Directory
+  hosts: pentest  # Assurez-vous de cibler le bon groupe dans l'inventaire
+  become: yes  # Privilège sudo
+  tasks:
+
+    - name: Mettre à jour les paquets et ajouter des dépôts si nécessaire
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    # Installation de certains outils AD
+    - name: Installer ldap-utils
+      apt:
+        name: ldap-utils
+        state: present
+
+    - name: Installer nmap
+      apt:
+        name: nmap
+        state: present
+
+    - name: Installer smbclient
+      apt:
+        name: smbclient
+        state: present
+
+    - name: Installer krb5-user
+      apt:
+        name: krb5-user
+        state: present
+
+    - name: Installer dig
+      apt:
+        name: dnsutils
+        state: present
+
+    - name: Installer NetExec
+      apt:
+        name: netexec
+        state: present
+
+    - name: Installer Impacket
+      apt:
+        name: impacket
+        state: present
+

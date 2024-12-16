@@ -1,0 +1,53 @@
+---
+- name: Installer et configurer Firefox avec les extensions
+  hosts: pentest
+  become: yes  # privilège sudo
+  tasks:
+    - name: Installer Firefox ESR
+      apt:
+        name: firefox-esr
+        state: present
+
+    - name: Télécharger FoxyProxy
+      get_url:
+        url: https://addons.mozilla.org/firefox/downloads/file/4228676/foxyproxy_standard-8.9.xpi
+        dest: /tmp/foxyproxy.xpi
+
+    - name: Télécharger Wappalyzer
+      get_url:
+        url: https://addons.mozilla.org/firefox/downloads/file/4392578/wappalyzer-6.10.76.xpi
+        dest: /tmp/wappalyzer.xpi
+
+    - name: Vérifier que le répertoire du profil Firefox existe
+      find:
+        paths: "/home/{{ ansible_user }}/.mozilla/firefox/"
+        patterns: "*.default-release"
+        recurse: yes
+        file_type: directory
+      register: firefox_profile
+
+    - name: Définir le chemin du profil Firefox
+      set_fact:
+        firefox_profile_path: "{{ firefox_profile.files[0].path }}"
+      when: firefox_profile.matched > 0
+
+    - name: Créer le fichier user.js s'il n'existe pas
+      file:
+        path: "{{ firefox_profile_path }}/user.js"
+        state: touch
+        mode: '0644'
+
+    - name: Ajouter FoxyProxy à user.js
+      lineinfile:
+        path: "{{ firefox_profile_path }}/user.js"
+        line: 'user_pref("extensions.install.addon", "/tmp/foxyproxy.xpi");'
+
+    - name: Ajouter Wappalyzer à user.js
+      lineinfile:
+        path: "{{ firefox_profile_path }}/user.js"
+        line: 'user_pref("extensions.install.addon", "/tmp/wappalyzer.xpi");'
+
+    - name: Fermer Firefox s'il est en cours d'exécution
+      command: pkill firefox
+      ignore_errors: yes
+

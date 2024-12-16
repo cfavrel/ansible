@@ -1,0 +1,38 @@
+---
+- name: Installer des outils divers
+  hosts: pentest
+  become: yes
+  tasks:
+    - name: Installer hydra
+      apt:
+        name: hydra
+        state: present
+
+
+    - name: Créer le répertoire pour les wordlists s'il n'existe pas
+      file:
+        path: /usr/share/wordlists
+        state: directory
+        mode: '0755'
+
+    - name: Télécharger rockyou.txt.gz depuis Kali Linux (officiel)
+      get_url:
+        url: http://downloads.kali.org/wordlists/rockyou.txt.gz
+        dest: /usr/share/wordlists/rockyou.txt.gz
+        mode: '0644'
+
+    - name: Installer wireshark
+      apt:
+        name: wireshark
+        state: present
+
+    - name: Installer proxychains
+      apt:
+        name: proxychains
+        state: present
+
+    - name: Installer cherrytree
+      apt:
+        name: cherrytree
+        state: present
+
